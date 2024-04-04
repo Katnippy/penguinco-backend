@@ -3,7 +3,7 @@
 public class Stock
 {
     public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty; // ? Limit what these can be?
     public int Quantity { get; set; }
 }
 

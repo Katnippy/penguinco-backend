@@ -1,3 +1,5 @@
+using PenguinCo.Api.Endpoints;
+
 namespace PenguinCo.Api;
 
 public class Program
@@ -7,7 +9,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var app = builder.Build();
 
-        app.MapGet("/", () => "Hello World!");
+        // GET
+        // GET /stores
+        app.MapGet("stores", StoreEndpoints.GetAllStores);
+
+        // GET /stores/1
+        app.MapGet("stores/{id}", StoreEndpoints.GetStoreById);
 
         app.Run();
     }
