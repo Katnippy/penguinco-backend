@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using PenguinCo.Api.Common;
 using PenguinCo.Api.DTOs;
 
 namespace PenguinCo.Api.Endpoints;
@@ -99,6 +100,28 @@ public static class StoreEndpoints
         )
     ];
 
+    // POST
+    public static CreatedAtRoute<StoreDto> PostStore(CreateStoreDto newStore)
+    {
+        StoreDto store =
+            new(
+                stores[^1].Id + 1,
+                newStore.Name,
+                newStore.Address,
+                newStore.Stock,
+                newStore.Updated
+            );
+
+        stores.Add(store);
+
+        return TypedResults.CreatedAtRoute(
+            store,
+            Constants.GET_STORE_ENDPOINT_NAME,
+            new { id = store.Id }
+        );
+    }
+
+    // GET
     public static Ok<List<StoreDto>> GetAllStores() => TypedResults.Ok(stores);
 
     public static Ok<StoreDto> GetStoreById(int id) =>
