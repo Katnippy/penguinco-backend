@@ -7,7 +7,7 @@ namespace PenguinCo.Api.Tests;
 public class PutTests
 {
     [Fact]
-    public void PutStore()
+    public void PutStoreUpdatesStore()
     {
         // Arrange
         var storeIdToUpdate = 3;

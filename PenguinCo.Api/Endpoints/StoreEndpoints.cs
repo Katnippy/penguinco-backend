@@ -142,4 +142,12 @@ public static class StoreEndpoints
 
         return TypedResults.NoContent();
     }
+
+    // DELETE
+    public static NoContent DeleteStore(int id)
+    {
+        stores.RemoveAll(store => store.Id == id);
+
+        return TypedResults.NoContent();
+    }
 }

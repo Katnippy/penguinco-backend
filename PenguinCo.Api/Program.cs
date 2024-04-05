@@ -26,6 +26,10 @@ public class Program
         // PUT /stores/1
         app.MapPut("stores/{id}", StoreEndpoints.PutStore);
 
+        // DELETE
+        // DELETE /stores/1
+        app.MapDelete("stores/{id}", StoreEndpoints.DeleteStore);
+
         app.Run();
     }
 }

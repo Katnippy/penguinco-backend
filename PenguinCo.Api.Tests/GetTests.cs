@@ -7,7 +7,7 @@ namespace PenguinCo.Api.Tests;
 public class GetTests
 {
     [Fact]
-    public void GetAllStoresReturnsAllStores()
+    public void GetAllStoresReadsAllStores()
     {
         // Arrange
 
@@ -19,7 +19,7 @@ public class GetTests
     }
 
     [Fact]
-    public void GetStoreByIdReturnsMatchingStore()
+    public void GetStoreByIdReadsMatchingStore()
     {
         // Arrange
         var storeToGet = 2;

@@ -7,7 +7,7 @@ namespace PenguinCo.Api.Tests;
 public class PostTests
 {
     [Fact]
-    public void PostStorePostsStore()
+    public void PostStoreCreatesStore()
     {
         // Arrange
         CreateStoreDto newStore =
