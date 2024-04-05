@@ -6,7 +6,7 @@ namespace PenguinCo.Api.Endpoints;
 
 public static class StoresEndpoints
 {
-    public static List<StoreDto> stores =
+    private static readonly List<StoreDto> _stores =
     [
         new(
             1,
@@ -105,14 +105,14 @@ public static class StoresEndpoints
     {
         StoreDto store =
             new(
-                stores[^1].Id + 1,
+                _stores[^1].Id + 1,
                 newStore.Name,
                 newStore.Address,
                 newStore.Stock,
                 newStore.Updated
             );
 
-        stores.Add(store);
+        _stores.Add(store);
 
         return TypedResults.CreatedAtRoute(
             store,
@@ -122,11 +122,11 @@ public static class StoresEndpoints
     }
 
     // GET
-    public static Ok<List<StoreDto>> GetAllStores() => TypedResults.Ok(stores);
+    public static Ok<List<StoreDto>> GetAllStores() => TypedResults.Ok(_stores);
 
     public static Results<Ok<StoreDto>, NotFound> GetStoreById(int id)
     {
-        StoreDto? store = stores.Find(store => store.Id == id);
+        StoreDto? store = _stores.Find(store => store.Id == id);
 
         return store != null ? TypedResults.Ok(store) : TypedResults.NotFound();
     }
@@ -134,14 +134,14 @@ public static class StoresEndpoints
     // PUT
     public static Results<NoContent, NotFound> PutStore(int id, UpdateStoreDto storeToUpdate)
     {
-        var index = stores.FindIndex(store => store.Id == id);
+        var index = _stores.FindIndex(store => store.Id == id);
 
         if (index == -1)
         {
             return TypedResults.NotFound();
         }
 
-        stores[index] = new StoreDto(
+        _stores[index] = new StoreDto(
             id,
             storeToUpdate.Name,
             storeToUpdate.Address,
@@ -155,8 +155,34 @@ public static class StoresEndpoints
     // DELETE
     public static NoContent DeleteStore(int id)
     {
-        stores.RemoveAll(store => store.Id == id);
+        _stores.RemoveAll(store => store.Id == id);
 
         return TypedResults.NoContent();
+    }
+
+    public static RouteGroupBuilder MapStoresEndpoints(this WebApplication app)
+    {
+        var group = app.MapGroup("stores");
+
+        // POST
+        // POST /stores
+        group.MapPost("/", PostStore);
+
+        // GET
+        // GET /stores
+        group.MapGet("/", GetAllStores);
+
+        // GET /stores/1
+        group.MapGet("/{id}", GetStoreById).WithName(Constants.GET_STORE_ENDPOINT_NAME);
+
+        // PUT
+        // PUT /stores/1
+        group.MapPut("/{id}", PutStore);
+
+        // DELETE
+        // DELETE /stores/1
+        group.MapDelete("/{id}", DeleteStore);
+
+        return group;
     }
 }
