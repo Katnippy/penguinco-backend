@@ -132,9 +132,14 @@ public static class StoreEndpoints
     }
 
     // PUT
-    public static NoContent PutStore(int id, UpdateStoreDto storeToUpdate)
+    public static Results<NoContent, NotFound> PutStore(int id, UpdateStoreDto storeToUpdate)
     {
         var index = stores.FindIndex(store => store.Id == id);
+
+        if (index == -1)
+        {
+            return TypedResults.NotFound();
+        }
 
         stores[index] = new StoreDto(
             id,

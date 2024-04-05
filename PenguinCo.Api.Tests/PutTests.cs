@@ -42,6 +42,45 @@ public class PutTests
         var result = StoreEndpoints.PutStore(storeIdToUpdate, storeToUpdate);
 
         // Assert
-        Assert.IsType<NoContent>(result);
+        Assert.IsType<NoContent>(result.Result);
+    }
+
+    [Fact]
+    public void GetStoreByNonexistentIdReturns404()
+    {
+        // Arrange
+        var storeIdToUpdate = 4;
+        UpdateStoreDto storeToUpdate =
+            new(
+                "PenguinCo Islington",
+                "Islington, London, England",
+                [
+                    new Stock
+                    {
+                        Id = 1,
+                        Name = "Pingu",
+                        Quantity = 23
+                    },
+                    new Stock
+                    {
+                        Id = 2,
+                        Name = "Pinga",
+                        Quantity = 8
+                    },
+                    new Stock
+                    {
+                        Id = 3,
+                        Name = "Tuxedosam",
+                        Quantity = 0
+                    }
+                ],
+                new DateOnly(2024, 4, 5)
+            );
+
+        // Act
+        var result = StoreEndpoints.PutStore(storeIdToUpdate, storeToUpdate);
+
+        // Assert
+        Assert.IsType<NotFound>(result.Result);
     }
 }
