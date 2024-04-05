@@ -126,4 +126,20 @@ public static class StoreEndpoints
 
     public static Ok<StoreDto> GetStoreById(int id) =>
         TypedResults.Ok(stores.Find(store => store.Id == id));
+
+    // PUT
+    public static NoContent PutStore(int id, UpdateStoreDto storeToUpdate)
+    {
+        var index = stores.FindIndex(store => store.Id == id);
+
+        stores[index] = new StoreDto(
+            id,
+            storeToUpdate.Name,
+            storeToUpdate.Address,
+            storeToUpdate.Stock,
+            storeToUpdate.Updated
+        );
+
+        return TypedResults.NoContent();
+    }
 }

@@ -22,6 +22,10 @@ public class Program
         app.MapGet("stores/{id}", StoreEndpoints.GetStoreById)
             .WithName(Constants.GET_STORE_ENDPOINT_NAME);
 
+        // PUT
+        // PUT /stores/1
+        app.MapPut("stores/{id}", StoreEndpoints.PutStore);
+
         app.Run();
     }
 }
