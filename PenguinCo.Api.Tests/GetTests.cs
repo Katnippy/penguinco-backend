@@ -28,6 +28,19 @@ public class GetTests
         var result = StoreEndpoints.GetStoreById(storeToGet);
 
         // Assert
-        Assert.IsType<Ok<StoreDto>>(result);
+        Assert.IsType<Ok<StoreDto>>(result.Result);
+    }
+
+    [Fact]
+    public void GetStoreByNonexistentIdReturns404()
+    {
+        // Arrange
+        var storeToGet = 4;
+
+        // Act
+        var result = StoreEndpoints.GetStoreById(storeToGet);
+
+        // Assert
+        Assert.IsType<NotFound>(result.Result);
     }
 }

@@ -124,8 +124,12 @@ public static class StoreEndpoints
     // GET
     public static Ok<List<StoreDto>> GetAllStores() => TypedResults.Ok(stores);
 
-    public static Ok<StoreDto> GetStoreById(int id) =>
-        TypedResults.Ok(stores.Find(store => store.Id == id));
+    public static Results<Ok<StoreDto>, NotFound> GetStoreById(int id)
+    {
+        StoreDto? store = stores.Find(store => store.Id == id);
+
+        return store != null ? TypedResults.Ok(store) : TypedResults.NotFound();
+    }
 
     // PUT
     public static NoContent PutStore(int id, UpdateStoreDto storeToUpdate)
