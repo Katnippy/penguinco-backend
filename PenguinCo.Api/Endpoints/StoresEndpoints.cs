@@ -4,7 +4,7 @@ using PenguinCo.Api.DTOs;
 
 namespace PenguinCo.Api.Endpoints;
 
-public static class StoreEndpoints
+public static class StoresEndpoints
 {
     public static List<StoreDto> stores =
     [

@@ -13,7 +13,7 @@ public class DeleteTests
         var storeIdToDelete = 1;
 
         // Act
-        var result = StoreEndpoints.DeleteStore(storeIdToDelete);
+        var result = StoresEndpoints.DeleteStore(storeIdToDelete);
 
         // Assert
         Assert.IsType<NoContent>(result);

@@ -12,7 +12,7 @@ public class GetTests
         // Arrange
 
         // Act
-        var result = StoreEndpoints.GetAllStores();
+        var result = StoresEndpoints.GetAllStores();
 
         // Assert
         Assert.IsType<Ok<List<StoreDto>>>(result);
@@ -25,7 +25,7 @@ public class GetTests
         var storeToGet = 2;
 
         // Act
-        var result = StoreEndpoints.GetStoreById(storeToGet);
+        var result = StoresEndpoints.GetStoreById(storeToGet);
 
         // Assert
         Assert.IsType<Ok<StoreDto>>(result.Result);
@@ -38,7 +38,7 @@ public class GetTests
         var storeToGet = 4;
 
         // Act
-        var result = StoreEndpoints.GetStoreById(storeToGet);
+        var result = StoresEndpoints.GetStoreById(storeToGet);
 
         // Assert
         Assert.IsType<NotFound>(result.Result);

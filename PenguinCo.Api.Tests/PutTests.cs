@@ -39,7 +39,7 @@ public class PutTests
             );
 
         // Act
-        var result = StoreEndpoints.PutStore(storeIdToUpdate, storeToUpdate);
+        var result = StoresEndpoints.PutStore(storeIdToUpdate, storeToUpdate);
 
         // Assert
         Assert.IsType<NoContent>(result.Result);
@@ -78,7 +78,7 @@ public class PutTests
             );
 
         // Act
-        var result = StoreEndpoints.PutStore(storeIdToUpdate, storeToUpdate);
+        var result = StoresEndpoints.PutStore(storeIdToUpdate, storeToUpdate);
 
         // Assert
         Assert.IsType<NotFound>(result.Result);

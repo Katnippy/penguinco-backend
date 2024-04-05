@@ -44,7 +44,7 @@ public class PostTests
             );
 
         // Act
-        var result = StoreEndpoints.PostStore(newStore);
+        var result = StoresEndpoints.PostStore(newStore);
 
         // Assert
         Assert.IsType<CreatedAtRoute<StoreDto>>(result);

@@ -12,23 +12,23 @@ public class Program
 
         // POST
         // POST /stores
-        app.MapPost("stores", StoreEndpoints.PostStore);
+        app.MapPost("stores", StoresEndpoints.PostStore);
 
         // GET
         // GET /stores
-        app.MapGet("stores", StoreEndpoints.GetAllStores);
+        app.MapGet("stores", StoresEndpoints.GetAllStores);
 
         // GET /stores/1
-        app.MapGet("stores/{id}", StoreEndpoints.GetStoreById)
+        app.MapGet("stores/{id}", StoresEndpoints.GetStoreById)
             .WithName(Constants.GET_STORE_ENDPOINT_NAME);
 
         // PUT
         // PUT /stores/1
-        app.MapPut("stores/{id}", StoreEndpoints.PutStore);
+        app.MapPut("stores/{id}", StoresEndpoints.PutStore);
 
         // DELETE
         // DELETE /stores/1
-        app.MapDelete("stores/{id}", StoreEndpoints.DeleteStore);
+        app.MapDelete("stores/{id}", StoresEndpoints.DeleteStore);
 
         app.Run();
     }
