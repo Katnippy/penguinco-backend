@@ -11,6 +11,6 @@ public record class StoreDto(
     int Id,
     string Name,
     string Address,
-    List<Stock> Stock,
+    List<Stock>? Stock,
     DateOnly Updated
 );

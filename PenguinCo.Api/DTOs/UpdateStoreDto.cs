@@ -1,8 +1,10 @@
-﻿namespace PenguinCo.Api.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PenguinCo.Api.DTOs;
 
 public record class UpdateStoreDto(
-    string Name,
-    string Address,
-    List<Stock> Stock,
-    DateOnly Updated
+    [Required] [StringLength(50)] string Name,
+    [Required] [StringLength(75)] string Address,
+    List<Stock>? Stock,
+    [Required] DateOnly Updated
 );

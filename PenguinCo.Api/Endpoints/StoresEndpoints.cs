@@ -162,7 +162,7 @@ public static class StoresEndpoints
 
     public static RouteGroupBuilder MapStoresEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("stores");
+        var group = app.MapGroup("stores").WithParameterValidation();
 
         // POST
         // POST /stores
