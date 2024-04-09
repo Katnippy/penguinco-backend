@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 *.http
 todo.txt
+/PenguinCo.Api/appsettings.Development.json
