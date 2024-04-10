@@ -2,7 +2,7 @@
 
 public class Stock
 {
-    public int StockItemId { get; set; }
+    public int Id { get; set; }
     public required StockItem StockItem { get; set; }
     public int Quantity { get; set; }
 }

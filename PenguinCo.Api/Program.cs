@@ -16,6 +16,8 @@ public class Program
 
         app.MapStoresEndpoints();
 
+        app.MigrateDb();
+
         app.Run();
     }
 }
