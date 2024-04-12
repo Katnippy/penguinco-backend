@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PenguinCo.Api.Data;
 
@@ -11,9 +12,11 @@ using PenguinCo.Api.Data;
 namespace PenguinCo.Api.Data.Migrations
 {
     [DbContext(typeof(PenguinCoContext))]
-    partial class PenguinCoContextModelSnapshot : ModelSnapshot
+    [Migration("20240412132128_SeedDatabase")]
+    partial class SeedDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
