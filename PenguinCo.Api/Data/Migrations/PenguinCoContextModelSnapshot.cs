@@ -24,11 +24,11 @@ namespace PenguinCo.Api.Data.Migrations
 
             modelBuilder.Entity("PenguinCo.Api.Entities.Stock", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StockId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockId"));
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -36,10 +36,10 @@ namespace PenguinCo.Api.Data.Migrations
                     b.Property<int>("StockItemId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StoreId")
+                    b.Property<int>("StoreId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("StockId");
 
                     b.HasIndex("StockItemId");
 
@@ -50,28 +50,28 @@ namespace PenguinCo.Api.Data.Migrations
 
             modelBuilder.Entity("PenguinCo.Api.Entities.StockItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StockItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockItemId"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("StockItemId");
 
                     b.ToTable("StockItems");
                 });
 
             modelBuilder.Entity("PenguinCo.Api.Entities.Store", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StoreId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StoreId"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -84,7 +84,7 @@ namespace PenguinCo.Api.Data.Migrations
                     b.Property<DateOnly>("Updated")
                         .HasColumnType("date");
 
-                    b.HasKey("Id");
+                    b.HasKey("StoreId");
 
                     b.ToTable("Stores");
                 });
@@ -99,7 +99,9 @@ namespace PenguinCo.Api.Data.Migrations
 
                     b.HasOne("PenguinCo.Api.Entities.Store", null)
                         .WithMany("Stock")
-                        .HasForeignKey("StoreId");
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("StockItem");
                 });

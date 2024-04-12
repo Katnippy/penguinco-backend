@@ -1,17 +1,13 @@
-﻿namespace PenguinCo.Api.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Stock
-{
-    public int Id { get; set; }
-    public required StockItem StockItem { get; set; }
-    public int Quantity { get; set; }
-}
+namespace PenguinCo.Api.Entities;
 
 public class Store
 {
-    public int Id { get; set; }
+    [Key]
+    public int StoreId { get; set; }
     public required string Name { get; set; }
     public required string Address { get; set; }
-    public List<Stock>? Stock { get; set; }
-    public DateOnly Updated { get; set; }
+    public List<Stock>? Stock { get; set; } // ? ICollection<Stock>? instead?
+    public required DateOnly Updated { get; set; }
 }

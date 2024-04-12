@@ -6,5 +6,6 @@ namespace PenguinCo.Api.Data;
 public class PenguinCoContext(DbContextOptions<PenguinCoContext> options) : DbContext(options)
 {
     public DbSet<Store> Stores => Set<Store>();
+    public DbSet<Stock> Stock => Set<Stock>();
     public DbSet<StockItem> StockItems => Set<StockItem>();
 }
