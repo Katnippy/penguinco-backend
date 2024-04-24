@@ -10,7 +10,7 @@ public class Stock
 
     [ForeignKey("StockItem")]
     public int StockItemId { get; set; }
-    public StockItem? StockItem { get; set; }
+    public StockItem? StockItem { get; set; } // ? Why is this nullable?
     public int Quantity { get; set; }
 
     [ForeignKey("Store")]

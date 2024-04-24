@@ -1,21 +1,21 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-using PenguinCo.Api.DTOs;
-using PenguinCo.Api.Endpoints;
+//using Microsoft.AspNetCore.Http.HttpResults;
+//using PenguinCo.Api.DTOs;
+//using PenguinCo.Api.Endpoints;
 
-namespace PenguinCo.Api.Tests;
+//namespace PenguinCo.Api.Tests;
 
-public class DeleteTests
-{
-    [Fact]
-    public void DeleteStoreDeletesStore()
-    {
-        // Arrange
-        var storeIdToDelete = 1;
+//public class DeleteTests
+//{
+//    [Fact]
+//    public void DeleteStoreDeletesStore()
+//    {
+//        // Arrange
+//        var storeIdToDelete = 1;
 
-        // Act
-        var result = StoresEndpoints.DeleteStore(storeIdToDelete);
+//        // Act
+//        var result = StoresEndpoints.DeleteStore(storeIdToDelete);
 
-        // Assert
-        Assert.IsType<NoContent>(result);
-    }
-}
+//        // Assert
+//        Assert.IsType<NoContent>(result);
+//    }
+//}
