@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
 using PenguinCo.Api.Common;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
@@ -10,7 +9,7 @@ namespace PenguinCo.Api.Endpoints;
 public static class StoresEndpoints
 {
     // POST
-    public static async Task<CreatedAtRoute<Store>> CreateStoreAsync(
+    public static async Task<CreatedAtRoute<ReturnStoreDto>> CreateStoreAsync(
         CreateStoreDto newStore,
         PenguinCoContext dbContext
     )
@@ -40,8 +39,24 @@ public static class StoresEndpoints
         dbContext.Stores.Add(store);
         await dbContext.SaveChangesAsync(); // ! Exceptions currently aren't handled.
 
+        ReturnStoreDto storeDto =
+            new(
+                store.StoreId,
+                store.Name,
+                store.Address,
+                store
+                    .Stock.ToList()
+                    .ConvertAll(stock => new ReturnStock
+                    {
+                        Id = stock.StockId,
+                        Name = stock.StockItem!.Name,
+                        Quantity = stock.Quantity
+                    }),
+                store.Updated
+            );
+
         return TypedResults.CreatedAtRoute(
-            store,
+            storeDto,
             Constants.GET_STORE_ENDPOINT_NAME,
             new { id = store.StoreId }
         );
