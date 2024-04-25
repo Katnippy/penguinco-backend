@@ -3,6 +3,7 @@ using PenguinCo.Api.Common;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
 using PenguinCo.Api.Entities;
+using PenguinCo.Api.Mapping;
 
 namespace PenguinCo.Api.Endpoints;
 
@@ -14,14 +15,7 @@ public static class StoresEndpoints
         PenguinCoContext dbContext
     )
     {
-        Store store =
-            new()
-            {
-                Name = newStore.Name,
-                Address = newStore.Address,
-                Stock = [],
-                Updated = newStore.Updated
-            };
+        Store store = newStore.ToEntity();
 
         foreach (var stock in newStore.Stock)
         {
@@ -39,24 +33,8 @@ public static class StoresEndpoints
         dbContext.Stores.Add(store);
         await dbContext.SaveChangesAsync(); // ! Exceptions currently aren't handled.
 
-        ReturnStoreDto storeDto =
-            new(
-                store.StoreId,
-                store.Name,
-                store.Address,
-                store
-                    .Stock.ToList()
-                    .ConvertAll(stock => new ReturnStock
-                    {
-                        Id = stock.StockId,
-                        Name = stock.StockItem!.Name,
-                        Quantity = stock.Quantity
-                    }),
-                store.Updated
-            );
-
         return TypedResults.CreatedAtRoute(
-            storeDto,
+            store.ToReturnStoreDto(),
             Constants.GET_STORE_ENDPOINT_NAME,
             new { id = store.StoreId }
         );
