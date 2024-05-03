@@ -19,7 +19,14 @@ public class PenguinCoContext(DbContextOptions<PenguinCoContext> options) : DbCo
                     StoreId = 1,
                     Name = "PenguinCo Shrewsbury",
                     Address = "Shrewsbury, West Midlands, England",
-                    Updated = new DateOnly(2024, 4, 12),
+                    Updated = new DateOnly(2024, 4, 25),
+                },
+                new Store
+                {
+                    StoreId = 2,
+                    Name = "PenguinCo Namibia",
+                    Address = "Lüderitz, ǁKaras Region, Namibia",
+                    Updated = new DateOnly(2024, 4, 25),
                 }
             );
 
@@ -39,6 +46,34 @@ public class PenguinCoContext(DbContextOptions<PenguinCoContext> options) : DbCo
                     StockItemId = 2,
                     Quantity = 5,
                     StoreId = 1,
+                },
+                new Stock
+                {
+                    StockId = 3,
+                    StockItemId = 8,
+                    Quantity = 15,
+                    StoreId = 2
+                },
+                new Stock
+                {
+                    StockId = 4,
+                    StockItemId = 9,
+                    Quantity = 15,
+                    StoreId = 2
+                },
+                new Stock
+                {
+                    StockId = 5,
+                    StockItemId = 10,
+                    Quantity = 5,
+                    StoreId = 2
+                },
+                new Stock
+                {
+                    StockId = 6,
+                    StockItemId = 11,
+                    Quantity = 20,
+                    StoreId = 2
                 }
             );
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using PenguinCo.Api.Common;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
@@ -40,15 +41,30 @@ public static class StoresEndpoints
         );
     }
 
-    //// GET
-    //public static Ok<List<StoreDto>> GetAllStores() => TypedResults.Ok(_stores);
+    // GET
+    public static async Task<Ok<List<StoreDto>>> GetAllStoresAsync(PenguinCoContext dbContext)
+    {
+        var stores = await dbContext
+            .Stores.Include(store => store.Stock)
+            .Select(store => store.ToDto())
+            .AsNoTracking()
+            .ToListAsync();
 
-    //public static Results<Ok<StoreDto>, NotFound> GetStoreById(int id)
-    //{
-    //    StoreDto? store = _stores.Find(store => store.Id == id);
+        return TypedResults.Ok(stores);
+    }
 
-    //    return store != null ? TypedResults.Ok(store) : TypedResults.NotFound();
-    //}
+    public static async Task<Results<Ok<StoreDto>, NotFound>> GetStoreByIdAsync(
+        int id,
+        PenguinCoContext dbContext
+    )
+    {
+        Store? store = await dbContext
+            .Stores.Include(store => store.Stock)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(store => store.StoreId == id);
+
+        return store != null ? TypedResults.Ok(store.ToDto()) : TypedResults.NotFound();
+    }
 
     //// PUT
     //public static Results<NoContent, NotFound> PutStore(int id, UpdateStoreDto storeToUpdate)
@@ -87,12 +103,12 @@ public static class StoresEndpoints
         // POST /stores
         group.MapPost("/", CreateStoreAsync);
 
-        //// GET
-        //// GET /stores
-        //group.MapGet("/", GetAllStores);
+        // GET
+        // GET /stores
+        group.MapGet("/", GetAllStoresAsync);
 
-        // GET /stores/1
-        //group.MapGet("/{id}", GetStoreById).WithName(Constants.GET_STORE_ENDPOINT_NAME);
+        //GET /stores/1
+        group.MapGet("/{id}", GetStoreByIdAsync).WithName(Constants.GET_STORE_ENDPOINT_NAME);
 
         //// PUT
         //// PUT /stores/1
