@@ -13,14 +13,14 @@ public class GetTests
     {
         // Arrange
         using var client = _app.CreateClient();
-        
+
         // Act
         HttpResponseMessage response;
         StoreDto storeDtoToCheck;
         using (response = await client.GetAsync("/stores"))
         {
             var content = await response.Content.ReadAsStringAsync();
-            
+
             List<StoreDto>? storeDtos = null;
             try
             {
@@ -48,7 +48,7 @@ public class GetTests
     {
         // Arrange
         var storeToGet = 1;
-        
+
         using var client = _app.CreateClient();
 
         // Act
@@ -66,7 +66,7 @@ public class GetTests
                 Assert.Fail("FAIL: The HTTP response message did not have any content.");
             }
         }
-        
+
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -82,7 +82,29 @@ public class GetTests
     {
         // Arrange
         var storeToGet = 99999;
-        
+
+        using var client = _app.CreateClient();
+
+        // Act
+        HttpResponseMessage response;
+        string content;
+        using (response = await client.GetAsync($"/stores/{storeToGet}"))
+        {
+            content = await response.Content.ReadAsStringAsync();
+        }
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+        Assert.Empty(content);
+    }
+
+    [Fact]
+    public async Task GetStoreByNonNumberIdReturns404()
+    {
+        // Arrange
+        var storeToGet = "penguin";
+
         using var client = _app.CreateClient();
 
         // Act

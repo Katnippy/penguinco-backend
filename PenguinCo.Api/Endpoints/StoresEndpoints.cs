@@ -108,7 +108,7 @@ public static class StoresEndpoints
         group.MapGet("/", GetAllStoresAsync);
 
         //GET /stores/1
-        group.MapGet("/{id}", GetStoreByIdAsync).WithName(Constants.GET_STORE_ENDPOINT_NAME);
+        group.MapGet("/{id:int}", GetStoreByIdAsync).WithName(Constants.GET_STORE_ENDPOINT_NAME);
 
         //// PUT
         //// PUT /stores/1
