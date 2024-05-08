@@ -6,13 +6,15 @@ public class ReturnStock
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
+
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
+
     [JsonPropertyName("quantity")]
     public int Quantity { get; set; }
 }
 
-public record class ReturnStoreDto(
+public record ReturnStoreDto(
     [property: JsonPropertyName("id")] int Id,
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("address")] string Address,

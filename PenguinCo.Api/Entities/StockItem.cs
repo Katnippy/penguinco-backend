@@ -6,5 +6,5 @@ public class StockItem
 {
     [Key]
     public int StockItemId { get; set; }
-    public required string Name { get; set; }
+    public required string Name { get; set; } // ? Limit length?
 }

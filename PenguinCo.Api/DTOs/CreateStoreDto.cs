@@ -2,7 +2,7 @@
 
 namespace PenguinCo.Api.DTOs;
 
-public record class CreateStoreDto(
+public record CreateStoreDto(
     [Required] [StringLength(50)] string Name,
     [Required] [StringLength(75)] string Address,
     [Required] List<Stock> Stock,

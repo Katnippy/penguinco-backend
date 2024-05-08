@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using PenguinCo.Api.Common;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
-using PenguinCo.Api.Entities;
 using PenguinCo.Api.Mapping;
 
 namespace PenguinCo.Api.Endpoints;
@@ -11,12 +10,12 @@ namespace PenguinCo.Api.Endpoints;
 public static class StoresEndpoints
 {
     // POST
-    public static async Task<CreatedAtRoute<ReturnStoreDto>> CreateStoreAsync(
+    private static async Task<CreatedAtRoute<ReturnStoreDto>> CreateStoreAsync(
         CreateStoreDto newStore,
         PenguinCoContext dbContext
     )
     {
-        Store store = newStore.ToEntity();
+        var store = newStore.ToEntity();
 
         foreach (var stock in newStore.Stock)
         {
@@ -42,7 +41,7 @@ public static class StoresEndpoints
     }
 
     // GET
-    public static async Task<Ok<List<StoreDto>>> GetAllStoresAsync(PenguinCoContext dbContext)
+    private static async Task<Ok<List<StoreDto>>> ReadAllStoresAsync(PenguinCoContext dbContext)
     {
         var stores = await dbContext
             .Stores.Include(store => store.Stock)
@@ -53,12 +52,12 @@ public static class StoresEndpoints
         return TypedResults.Ok(stores);
     }
 
-    public static async Task<Results<Ok<StoreDto>, NotFound>> GetStoreByIdAsync(
+    private static async Task<Results<Ok<StoreDto>, NotFound>> ReadStoreByIdAsync(
         int id,
         PenguinCoContext dbContext
     )
     {
-        Store? store = await dbContext
+        var store = await dbContext
             .Stores.Include(store => store.Stock)
             .AsNoTracking()
             .FirstOrDefaultAsync(store => store.StoreId == id);
@@ -95,7 +94,7 @@ public static class StoresEndpoints
     //    return TypedResults.NoContent();
     //}
 
-    public static RouteGroupBuilder MapStoresEndpoints(this WebApplication app)
+    public static void MapStoresEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("stores").WithParameterValidation();
 
@@ -105,10 +104,10 @@ public static class StoresEndpoints
 
         // GET
         // GET /stores
-        group.MapGet("/", GetAllStoresAsync);
+        group.MapGet("/", ReadAllStoresAsync);
 
         //GET /stores/1
-        group.MapGet("/{id:int}", GetStoreByIdAsync).WithName(Constants.GET_STORE_ENDPOINT_NAME);
+        group.MapGet("/{id:int}", ReadStoreByIdAsync).WithName(Constants.GET_STORE_ENDPOINT_NAME);
 
         //// PUT
         //// PUT /stores/1
@@ -117,7 +116,5 @@ public static class StoresEndpoints
         //// DELETE
         //// DELETE /stores/1
         //group.MapDelete("/{id}", DeleteStore);
-
-        return group;
     }
 }

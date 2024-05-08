@@ -14,7 +14,7 @@ public class Stock
     public int Quantity { get; set; }
 }
 
-public record class StoreDto(
+public record StoreDto(
     [property: JsonPropertyName("id")] int Id,
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("address")] string Address,
