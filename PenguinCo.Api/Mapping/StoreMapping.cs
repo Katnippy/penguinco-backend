@@ -1,5 +1,6 @@
 ﻿using PenguinCo.Api.DTOs;
 using PenguinCo.Api.Entities;
+using Stock = PenguinCo.Api.Entities.Stock;
 
 namespace PenguinCo.Api.Mapping;
 

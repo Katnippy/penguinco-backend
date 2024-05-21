@@ -4,6 +4,7 @@ using PenguinCo.Api.Common;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
 using PenguinCo.Api.Mapping;
+using Stock = PenguinCo.Api.Entities.Stock;
 
 namespace PenguinCo.Api.Endpoints;
 
@@ -65,26 +66,43 @@ public static class StoresEndpoints
         return store != null ? TypedResults.Ok(store.ToDto()) : TypedResults.NotFound();
     }
 
-    //// PUT
-    //public static Results<NoContent, NotFound> PutStore(int id, UpdateStoreDto storeToUpdate)
-    //{
-    //    var index = _stores.FindIndex(store => store.Id == id);
+    // PUT
+    private static async Task<Results<NoContent, NotFound>> UpdateStoreAsync(
+        int id,
+        UpdateStoreDto updatedStore,
+        PenguinCoContext dbContext
+    )
+    {
+        var existingStore = await dbContext
+            .Stores.Include(store => store.Stock)
+            .FirstOrDefaultAsync(store => store.StoreId == id);
 
-    //    if (index == -1)
-    //    {
-    //        return TypedResults.NotFound();
-    //    }
+        if (existingStore == null)
+        {
+            return TypedResults.NotFound();
+        }
+        else
+        {
+            dbContext.Entry(existingStore).CurrentValues.SetValues(updatedStore);
+            dbContext.Stock.RemoveRange(existingStore.Stock);
+            foreach (var newStock in updatedStore.Stock)
+            {
+                await dbContext.Stock.AddAsync(
+                    new Stock
+                    {
+                        StockItemId = newStock.StockItemId,
+                        // ? Do we really need to do this every time?
+                        StockItem = await dbContext.StockItems.FindAsync(newStock.StockItemId),
+                        Quantity = newStock.Quantity,
+                        StoreId = id
+                    }
+                );
+            }
+            await dbContext.SaveChangesAsync();
 
-    //    _stores[index] = new StoreDto(
-    //        id,
-    //        storeToUpdate.Name,
-    //        storeToUpdate.Address,
-    //        storeToUpdate.Stock,
-    //        storeToUpdate.Updated
-    //    );
-
-    //    return TypedResults.NoContent();
-    //}
+            return TypedResults.NoContent();
+        }
+    }
 
     //// DELETE
     //public static NoContent DeleteStore(int id)
@@ -109,9 +127,9 @@ public static class StoresEndpoints
         //GET /stores/1
         group.MapGet("/{id:int}", ReadStoreByIdAsync).WithName(Constants.GET_STORE_ENDPOINT_NAME);
 
-        //// PUT
-        //// PUT /stores/1
-        //group.MapPut("/{id}", PutStore);
+        // PUT
+        // PUT /stores/1
+        group.MapPut("/{id:int}", UpdateStoreAsync);
 
         //// DELETE
         //// DELETE /stores/1
