@@ -1,12 +1,32 @@
 using System.Net;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
 
 namespace PenguinCo.Api.Tests;
 
-public class PutTests
+public class PutTests : IAsyncLifetime
 {
-    private readonly TestApp _app = new();
+    private readonly TestApp _app;
+    private readonly PenguinCoContext _dbContext;
+
+    public PutTests()
+    {
+        _app = new();
+        var scope = _app.Services.CreateScope();
+        _dbContext = scope.ServiceProvider.GetRequiredService<PenguinCoContext>();
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _dbContext.Database.EnsureCreatedAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _dbContext.Database.EnsureDeletedAsync();
+    }
 
     [Fact]
     public async Task PutStoreUpdatesStore()
