@@ -71,11 +71,12 @@ public class PutTests : IAsyncLifetime
         using var client = _app.CreateClient();
 
         // Act
-        var (response, content, returnStoreDto) = await TestHelpers.UpdateStoreAndReadUpdatedStore(
-            client,
-            STORE_TO_UPDATE,
-            contentToPut
-        );
+        var (response, content, returnStoreDto) =
+            await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
+                client,
+                STORE_TO_UPDATE,
+                contentToPut
+            );
 
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -103,11 +104,12 @@ public class PutTests : IAsyncLifetime
         using var client = _app.CreateClient();
 
         // Act
-        var (response, content, returnStoreDto) = await TestHelpers.UpdateStoreAndReadUpdatedStore(
-            client,
-            STORE_TO_UPDATE,
-            contentToPut
-        );
+        var (response, content, returnStoreDto) =
+            await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
+                client,
+                STORE_TO_UPDATE,
+                contentToPut
+            );
 
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -134,7 +136,7 @@ public class PutTests : IAsyncLifetime
 
         // Act
         var (response, validationJsonObject) =
-            await TestHelpers.ReturnValidationJsonObjectFromResponse(
+            await TestHelpers.ReturnValidationJsonObjectOnUpdateAsync(
                 client,
                 STORE_TO_UPDATE,
                 contentToPut
@@ -191,7 +193,7 @@ public class PutTests : IAsyncLifetime
 
         // Act
         var (response, validationJsonObject) =
-            await TestHelpers.ReturnValidationJsonObjectFromResponse(
+            await TestHelpers.ReturnValidationJsonObjectOnUpdateAsync(
                 client,
                 STORE_TO_UPDATE,
                 contentToPut
@@ -288,13 +290,14 @@ public class PutTests : IAsyncLifetime
         using var client = _app.CreateClient();
 
         // Act
-        var (firstResponse, firstContent, _) = await TestHelpers.UpdateStoreAndReadUpdatedStore(
-            client,
-            STORE_TO_UPDATE,
-            firstContentToPut
-        );
+        var (firstResponse, firstContent, _) =
+            await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
+                client,
+                STORE_TO_UPDATE,
+                firstContentToPut
+            );
         var (secondResponse, secondContent, returnStoreDto) =
-            await TestHelpers.UpdateStoreAndReadUpdatedStore(
+            await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
                 client,
                 STORE_TO_UPDATE,
                 secondContentToPut

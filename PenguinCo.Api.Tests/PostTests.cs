@@ -127,20 +127,8 @@ public class PostTests
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        ValidationJsonObject? validationJsonObject = null;
-        using (response = await client.PostAsync($"/stores", contentToPost))
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                validationJsonObject = JsonSerializer.Deserialize<ValidationJsonObject>(content);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
-        }
+        var (response, validationJsonObject) =
+            await TestHelpers.ReturnValidationJsonObjectOnCreateAsync(client, contentToPost);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -190,20 +178,8 @@ public class PostTests
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        ValidationJsonObject? validationJsonObject = null;
-        using (response = await client.PostAsync($"/stores", contentToPost))
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                validationJsonObject = JsonSerializer.Deserialize<ValidationJsonObject>(content);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
-        }
+        var (response, validationJsonObject) =
+            await TestHelpers.ReturnValidationJsonObjectOnCreateAsync(client, contentToPost);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
