@@ -6,9 +6,9 @@ namespace PenguinCo.Api.Tests;
 
 public static class TestHelpers
 {
-    public static StringContent SerialiseUpdateStoreDto(UpdateStoreDto updatedStore)
+    public static StringContent SerialiseDto(ICUStoreDto storeDto)
     {
-        var jsonString = JsonSerializer.Serialize(updatedStore);
+        var jsonString = JsonSerializer.Serialize(storeDto);
         StringContent contentToPut = new(jsonString, Encoding.UTF8, "application/json");
 
         return contentToPut;

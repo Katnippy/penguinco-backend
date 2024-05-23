@@ -1,34 +1,14 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
-using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
 using Stock = PenguinCo.Api.DTOs.Stock;
 
 namespace PenguinCo.Api.Tests;
 
-public class PostTests : IAsyncLifetime
+public class PostTests
 {
-    private readonly TestApp _app;
-    private readonly PenguinCoContext _dbContext;
-
-    public PostTests()
-    {
-        _app = new();
-        var scope = _app.Services.CreateScope();
-        _dbContext = scope.ServiceProvider.GetRequiredService<PenguinCoContext>();
-    }
-
-    public async Task InitializeAsync()
-    {
-        await _dbContext.Database.EnsureCreatedAsync();
-    }
-
-    public async Task DisposeAsync()
-    {
-        await _dbContext.Database.EnsureDeletedAsync();
-    }
+    private readonly TestApp _app = new();
 
     [Fact]
     public async Task PostStoreCreatesStore()
@@ -66,8 +46,7 @@ public class PostTests : IAsyncLifetime
                 ],
                 new DateOnly(2024, 5, 3)
             );
-        var jsonString = JsonSerializer.Serialize(newStore);
-        StringContent contentToPost = new(jsonString, Encoding.UTF8, "application/json");
+        var contentToPost = TestHelpers.SerialiseDto(newStore);
 
         using var client = _app.CreateClient();
 
@@ -107,8 +86,7 @@ public class PostTests : IAsyncLifetime
                 [],
                 new DateOnly(2024, 5, 3)
             );
-        var jsonString = JsonSerializer.Serialize(newStore);
-        StringContent contentToPost = new(jsonString, Encoding.UTF8, "application/json");
+        var contentToPost = TestHelpers.SerialiseDto(newStore);
 
         using var client = _app.CreateClient();
 
@@ -207,8 +185,7 @@ public class PostTests : IAsyncLifetime
                 ],
                 new DateOnly(2024, 5, 3)
             );
-        var jsonString = JsonSerializer.Serialize(newStore);
-        StringContent contentToPost = new(jsonString, Encoding.UTF8, "application/json");
+        var contentToPost = TestHelpers.SerialiseDto(newStore);
 
         using var client = _app.CreateClient();
 

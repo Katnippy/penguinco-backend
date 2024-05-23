@@ -7,4 +7,4 @@ public record UpdateStoreDto(
     [Required] [StringLength(75)] string Address,
     [Required] List<Stock> Stock,
     [Required] DateOnly Updated
-);
+) : ICUStoreDto;

@@ -66,7 +66,7 @@ public class PutTests : IAsyncLifetime
                 ],
                 new DateOnly(2024, 5, 21)
             );
-        var contentToPut = TestHelpers.SerialiseUpdateStoreDto(updatedStore);
+        var contentToPut = TestHelpers.SerialiseDto(updatedStore);
 
         using var client = _app.CreateClient();
 
@@ -98,7 +98,7 @@ public class PutTests : IAsyncLifetime
                 [],
                 new DateOnly(2024, 5, 21)
             );
-        var contentToPut = TestHelpers.SerialiseUpdateStoreDto(updatedStore);
+        var contentToPut = TestHelpers.SerialiseDto(updatedStore);
 
         using var client = _app.CreateClient();
 
@@ -185,7 +185,7 @@ public class PutTests : IAsyncLifetime
                 ],
                 new DateOnly(2024, 5, 21)
             );
-        var contentToPut = TestHelpers.SerialiseUpdateStoreDto(updatedStore);
+        var contentToPut = TestHelpers.SerialiseDto(updatedStore);
 
         using var client = _app.CreateClient();
 
@@ -249,7 +249,7 @@ public class PutTests : IAsyncLifetime
                 ],
                 new DateOnly(2024, 5, 21)
             );
-        var firstContentToPut = TestHelpers.SerialiseUpdateStoreDto(firstStoreUpdate);
+        var firstContentToPut = TestHelpers.SerialiseDto(firstStoreUpdate);
 
         UpdateStoreDto secondStoreUpdate =
             new(
@@ -283,7 +283,7 @@ public class PutTests : IAsyncLifetime
                 ],
                 new DateOnly(2024, 5, 21)
             );
-        var secondContentToPut = TestHelpers.SerialiseUpdateStoreDto(secondStoreUpdate);
+        var secondContentToPut = TestHelpers.SerialiseDto(secondStoreUpdate);
 
         using var client = _app.CreateClient();
 
