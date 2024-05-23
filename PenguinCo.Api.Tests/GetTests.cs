@@ -47,14 +47,14 @@ public class GetTests
     public async Task GetStoreByIdReadsMatchingStore()
     {
         // Arrange
-        var storeToGet = 1;
+        const int STORE_TO_GET = 1;
 
         using var client = _app.CreateClient();
 
         // Act
         HttpResponseMessage response;
         StoreDto? storeDto = null;
-        using (response = await client.GetAsync($"/stores/{storeToGet}"))
+        using (response = await client.GetAsync($"/stores/{STORE_TO_GET}"))
         {
             var content = await response.Content.ReadAsStringAsync();
             try
@@ -81,17 +81,12 @@ public class GetTests
     public async Task GetStoreByNonexistentIdReturns404()
     {
         // Arrange
-        var storeToGet = 99999;
+        const int STORE_TO_GET = 99999;
 
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        string content;
-        using (response = await client.GetAsync($"/stores/{storeToGet}"))
-        {
-            content = await response.Content.ReadAsStringAsync();
-        }
+        var (response, content) = await TestHelpers.ReturnContentOnReadAsync(client, STORE_TO_GET);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -103,17 +98,12 @@ public class GetTests
     public async Task GetStoreByNonNumberIdReturns404()
     {
         // Arrange
-        var storeToGet = "penguin";
+        const string STORE_TO_GET = "penguin";
 
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        string content;
-        using (response = await client.GetAsync($"/stores/{storeToGet}"))
-        {
-            content = await response.Content.ReadAsStringAsync();
-        }
+        var (response, content) = await TestHelpers.ReturnContentOnReadAsync(client, STORE_TO_GET);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);

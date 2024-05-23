@@ -6,14 +6,6 @@ namespace PenguinCo.Api.Tests;
 
 public static class TestHelpers
 {
-    public static StringContent SerialiseDto(ICUStoreDto storeDto)
-    {
-        var jsonString = JsonSerializer.Serialize(storeDto);
-        StringContent contentToPut = new(jsonString, Encoding.UTF8, "application/json");
-
-        return contentToPut;
-    }
-
     private static async Task<ValidationJsonObject> ReturnValidationJsonObjectFromResponseAsync(
         HttpResponseMessage response
     )
@@ -30,6 +22,36 @@ public static class TestHelpers
         }
 
         return validationJsonObject!;
+    }
+
+    public static StringContent SerialiseDto(ICUStoreDto storeDto)
+    {
+        var jsonString = JsonSerializer.Serialize(storeDto);
+        StringContent contentToPut = new(jsonString, Encoding.UTF8, "application/json");
+
+        return contentToPut;
+    }
+
+    public static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
+        HttpClient client,
+        int storeToGet
+    )
+    {
+        using var response = await client.GetAsync($"/stores/{storeToGet}");
+        var content = await response.Content.ReadAsStringAsync();
+
+        return (response, content);
+    }
+
+    public static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
+        HttpClient client,
+        string storeToGet
+    )
+    {
+        using var response = await client.GetAsync($"/stores/{storeToGet}");
+        var content = await response.Content.ReadAsStringAsync();
+
+        return (response, content);
     }
 
     // POST
@@ -104,17 +126,14 @@ public static class TestHelpers
             content = await response.Content.ReadAsStringAsync();
         }
 
-        using (var getResponse = await client.GetAsync($"/stores/{storeToUpdate}"))
+        var (_, getContent) = await ReturnContentOnReadAsync(client, storeToUpdate);
+        try
         {
-            var getContent = await getResponse.Content.ReadAsStringAsync();
-            try
-            {
-                returnStoreDto = JsonSerializer.Deserialize<ReturnStoreDto>(getContent);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
+            returnStoreDto = JsonSerializer.Deserialize<ReturnStoreDto>(getContent);
+        }
+        catch (JsonException)
+        {
+            Assert.Fail("FAIL: The HTTP response message did not have any content.");
         }
 
         return (response, content, returnStoreDto)!;
