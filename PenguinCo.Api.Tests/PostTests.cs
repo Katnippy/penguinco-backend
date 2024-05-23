@@ -1,14 +1,34 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
 using Stock = PenguinCo.Api.DTOs.Stock;
 
 namespace PenguinCo.Api.Tests;
 
-public class PostTests
+public class PostTests : IAsyncLifetime
 {
-    private readonly TestApp _app = new();
+    private readonly TestApp _app;
+    private readonly PenguinCoContext _dbContext;
+
+    public PostTests()
+    {
+        _app = new();
+        var scope = _app.Services.CreateScope();
+        _dbContext = scope.ServiceProvider.GetRequiredService<PenguinCoContext>();
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _dbContext.Database.EnsureCreatedAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _dbContext.Database.EnsureDeletedAsync();
+    }
 
     [Fact]
     public async Task PostStoreCreatesStore()
