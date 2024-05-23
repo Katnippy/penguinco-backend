@@ -116,7 +116,7 @@ public class PutTests : IAsyncLifetime
 
         Assert.Empty(content);
 
-        Assert.Empty(returnStoreDto!.Stock);
+        Assert.Empty(returnStoreDto.Stock);
     }
 
     [Fact]
@@ -145,8 +145,8 @@ public class PutTests : IAsyncLifetime
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-        Assert.True(validationJsonObject!.Errors.Count == 1);
-        Assert.Contains("The Stock field is required.", validationJsonObject!.Errors["Stock"]);
+        Assert.True(validationJsonObject.Errors.Count == 1);
+        Assert.Contains("The Stock field is required.", validationJsonObject.Errors["Stock"]);
     }
 
     [Fact]
@@ -202,14 +202,14 @@ public class PutTests : IAsyncLifetime
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-        Assert.True(validationJsonObject!.Errors.Count == 2);
+        Assert.True(validationJsonObject.Errors.Count == 2);
         Assert.Contains(
             "The field Name must be a string with a maximum length of 50.",
-            validationJsonObject!.Errors["Name"]
+            validationJsonObject.Errors["Name"]
         );
         Assert.Contains(
             "The field Address must be a string with a maximum length of 75.",
-            validationJsonObject!.Errors["Address"]
+            validationJsonObject.Errors["Address"]
         );
     }
 
@@ -217,7 +217,7 @@ public class PutTests : IAsyncLifetime
     public async Task PutStoreInOrderUpdatesStoreInOrder()
     {
         // Arrange
-        var STORE_TO_UPDATE = 2;
+        const int STORE_TO_UPDATE = 2;
 
         UpdateStoreDto firstStoreUpdate =
             new(
@@ -310,6 +310,6 @@ public class PutTests : IAsyncLifetime
         Assert.Empty(firstContent);
         Assert.Empty(secondContent);
 
-        Assert.True(returnStoreDto!.Stock[3].Quantity == 18);
+        Assert.True(returnStoreDto.Stock[3].Quantity == 18);
     }
 }

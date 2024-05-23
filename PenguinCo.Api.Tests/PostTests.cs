@@ -51,25 +51,15 @@ public class PostTests
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        ReturnStoreDto? returnStoreDto = null;
-        using (response = await client.PostAsync($"/stores", contentToPost))
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                returnStoreDto = JsonSerializer.Deserialize<ReturnStoreDto>(content);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
-        }
+        var (response, returnStoreDto) = await TestHelpers.ReturnReturnStoreDtoOnCreateAsync(
+            client,
+            contentToPost
+        );
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-        Assert.True(returnStoreDto!.Name == "PenguinCo Madagascar");
+        Assert.True(returnStoreDto.Name == "PenguinCo Madagascar");
         Assert.True(returnStoreDto.Address == "Antananarivo, Analamanga, Madagascar");
         Assert.True(returnStoreDto.Stock.Count == 4);
         Assert.True(returnStoreDto.Updated.Equals(new DateOnly(2024, 5, 3)));
@@ -91,25 +81,15 @@ public class PostTests
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        ReturnStoreDto? returnStoreDto = null;
-        using (response = await client.PostAsync($"/stores", contentToPost))
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                returnStoreDto = JsonSerializer.Deserialize<ReturnStoreDto>(content);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
-        }
+        var (response, returnStoreDto) = await TestHelpers.ReturnReturnStoreDtoOnCreateAsync(
+            client,
+            contentToPost
+        );
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-        Assert.True(returnStoreDto!.Stock != null);
+        Assert.True(returnStoreDto.Stock != null);
         Assert.True(returnStoreDto.Stock.Count == 0);
     }
 
@@ -133,8 +113,8 @@ public class PostTests
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-        Assert.True(validationJsonObject!.Errors.Count == 1);
-        Assert.Contains("The Stock field is required.", validationJsonObject!.Errors["Stock"]);
+        Assert.True(validationJsonObject.Errors.Count == 1);
+        Assert.Contains("The Stock field is required.", validationJsonObject.Errors["Stock"]);
     }
 
     [Fact]
@@ -184,14 +164,14 @@ public class PostTests
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-        Assert.True(validationJsonObject!.Errors.Count == 2);
+        Assert.True(validationJsonObject.Errors.Count == 2);
         Assert.Contains(
             "The field Name must be a string with a maximum length of 50.",
-            validationJsonObject!.Errors["Name"]
+            validationJsonObject.Errors["Name"]
         );
         Assert.Contains(
             "The field Address must be a string with a maximum length of 75.",
-            validationJsonObject!.Errors["Address"]
+            validationJsonObject.Errors["Address"]
         );
     }
 }

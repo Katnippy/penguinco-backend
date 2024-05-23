@@ -35,6 +35,29 @@ public static class TestHelpers
     // POST
     public static async Task<(
         HttpResponseMessage,
+        ReturnStoreDto
+    )> ReturnReturnStoreDtoOnCreateAsync(HttpClient client, StringContent contentToPost)
+    {
+        HttpResponseMessage response;
+        ReturnStoreDto? returnStoreDto = null;
+        using (response = await client.PostAsync($"/stores", contentToPost))
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            try
+            {
+                returnStoreDto = JsonSerializer.Deserialize<ReturnStoreDto>(content);
+            }
+            catch (JsonException)
+            {
+                Assert.Fail("FAIL: The HTTP response message did not have any content.");
+            }
+        }
+
+        return (response, returnStoreDto!);
+    }
+
+    public static async Task<(
+        HttpResponseMessage,
         ValidationJsonObject
     )> ReturnValidationJsonObjectOnCreateAsync(HttpClient client, StringContent contentToPost)
     {
