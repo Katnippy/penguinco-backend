@@ -18,6 +18,6 @@ public class Program
 
         await app.MigrateDbAsync();
 
-        app.Run();
+        await app.RunAsync();
     }
 }
