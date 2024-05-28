@@ -24,6 +24,16 @@ public static class TestHelpers
         return validationJsonObject!;
     }
 
+    private static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
+        HttpClient client
+    )
+    {
+        using var response = await client.GetAsync($"/stores");
+        var content = await response.Content.ReadAsStringAsync();
+
+        return (response, content);
+    }
+
     public static StringContent SerialiseDto(ICUStoreDto storeDto)
     {
         var jsonString = JsonSerializer.Serialize(storeDto);
@@ -90,6 +100,42 @@ public static class TestHelpers
     }
 
     // GET
+    public static async Task<(HttpResponseMessage, List<StoreDto>)> ReturnStoreDtosOnReadAsync(
+        HttpClient client
+    )
+    {
+        List<StoreDto>? storeDtos = null;
+        var (response, content) = await ReturnContentOnReadAsync(client);
+        try
+        {
+            storeDtos = JsonSerializer.Deserialize<List<StoreDto>>(content);
+        }
+        catch (JsonException)
+        {
+            Assert.Fail("FAIL: The HTTP response message did not have any content.");
+        }
+
+        return (response, storeDtos!);
+    }
+
+    public static async Task<(HttpResponseMessage, StoreDto)> ReturnStoreDtoOnReadAsync(
+        HttpClient client,
+        int storeToGet
+    )
+    {
+        StoreDto? storeDto = null;
+        var (response, content) = await ReturnContentOnReadAsync(client, storeToGet);
+        try
+        {
+            storeDto = JsonSerializer.Deserialize<StoreDto>(content);
+        }
+        catch (JsonException)
+        {
+            Assert.Fail("FAIL: The HTTP response message did not have any content.");
+        }
+
+        return (response, storeDto!);
+    }
 
     // PUT
     public static async Task<(

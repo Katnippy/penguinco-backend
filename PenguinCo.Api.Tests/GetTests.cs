@@ -12,26 +12,13 @@ public class GetTests
     public async Task GetAllStoresReadsAllStores()
     {
         // Arrange
+        const int STOREDTO_TO_CHECK = 1;
+
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        StoreDto storeDtoToCheck;
-        using (response = await client.GetAsync("/stores"))
-        {
-            var content = await response.Content.ReadAsStringAsync();
-
-            List<StoreDto>? storeDtos = null;
-            try
-            {
-                storeDtos = JsonSerializer.Deserialize<List<StoreDto>>(content);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
-            storeDtoToCheck = storeDtos![1];
-        }
+        var (response, storeDtos) = await TestHelpers.ReturnStoreDtosOnReadAsync(client);
+        var storeDtoToCheck = storeDtos[STOREDTO_TO_CHECK];
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -52,20 +39,10 @@ public class GetTests
         using var client = _app.CreateClient();
 
         // Act
-        HttpResponseMessage response;
-        StoreDto? storeDto = null;
-        using (response = await client.GetAsync($"/stores/{STORE_TO_GET}"))
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                storeDto = JsonSerializer.Deserialize<StoreDto>(content);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
-        }
+        var (response, storeDto) = await TestHelpers.ReturnStoreDtoOnReadAsync(
+            client,
+            STORE_TO_GET
+        );
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
