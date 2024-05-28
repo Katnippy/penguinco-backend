@@ -5,7 +5,7 @@ namespace PenguinCo.Api;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +16,7 @@ public class Program
 
         app.MapStoresEndpoints();
 
-        app.MigrateDb();
+        await app.MigrateDbAsync();
 
         app.Run();
     }
