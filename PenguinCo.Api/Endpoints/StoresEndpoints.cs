@@ -20,7 +20,7 @@ public static class StoresEndpoints
 
         foreach (var stock in newStore.Stock)
         {
-            var storeStock = new Entities.Stock
+            var storeStock = new Stock
             {
                 StockItemId = stock.StockItemId,
                 // ? Do we really need to do this every time?
@@ -104,13 +104,13 @@ public static class StoresEndpoints
         }
     }
 
-    //// DELETE
-    //public static NoContent DeleteStore(int id)
-    //{
-    //    _stores.RemoveAll(store => store.Id == id);
+    // DELETE
+    private static async Task<NoContent> DeleteStoreAsync(int id, PenguinCoContext dbContext)
+    {
+        await dbContext.Stores.Where(store => store.StoreId == id).ExecuteDeleteAsync();
 
-    //    return TypedResults.NoContent();
-    //}
+        return TypedResults.NoContent();
+    }
 
     public static void MapStoresEndpoints(this WebApplication app)
     {
@@ -124,15 +124,15 @@ public static class StoresEndpoints
         // GET /stores
         group.MapGet("/", ReadAllStoresAsync);
 
-        //GET /stores/1
+        // GET /stores/1
         group.MapGet("/{id:int}", ReadStoreByIdAsync).WithName(Constants.GET_STORE_ENDPOINT_NAME);
 
         // PUT
         // PUT /stores/1
         group.MapPut("/{id:int}", UpdateStoreAsync);
 
-        //// DELETE
-        //// DELETE /stores/1
-        //group.MapDelete("/{id}", DeleteStore);
+        // DELETE
+        // DELETE /stores/1
+        group.MapDelete("/{id:int}", DeleteStoreAsync);
     }
 }
