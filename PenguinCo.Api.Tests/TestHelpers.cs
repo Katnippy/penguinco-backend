@@ -6,22 +6,29 @@ namespace PenguinCo.Api.Tests;
 
 public static class TestHelpers
 {
-    private static async Task<ValidationJsonObject> ReturnValidationJsonObjectFromResponseAsync(
-        HttpResponseMessage response
-    )
+    private static T DeserialiseContent<T>(string content)
     {
-        ValidationJsonObject? validationJsonObject = null;
-        var content = await response.Content.ReadAsStringAsync();
+        T? deserialised = default;
         try
         {
-            validationJsonObject = JsonSerializer.Deserialize<ValidationJsonObject>(content);
+            deserialised = JsonSerializer.Deserialize<T>(content);
         }
         catch (JsonException)
         {
             Assert.Fail("FAIL: The HTTP response message did not have any content.");
         }
 
-        return validationJsonObject!;
+        return deserialised!;
+    }
+
+    private static async Task<ValidationJsonObject> ReturnValidationJsonObjectFromResponseAsync(
+        HttpResponseMessage response
+    )
+    {
+        var content = await response.Content.ReadAsStringAsync();
+        var validationJsonObject = DeserialiseContent<ValidationJsonObject>(content);
+
+        return validationJsonObject;
     }
 
     private static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
@@ -40,6 +47,52 @@ public static class TestHelpers
         StringContent contentToPut = new(jsonString, Encoding.UTF8, "application/json");
 
         return contentToPut;
+    }
+
+    // POST
+    public static async Task<(
+        HttpResponseMessage,
+        ReturnStoreDto
+    )> ReturnReturnStoreDtoOnCreateAsync(HttpClient client, StringContent contentToPost)
+    {
+        using var response = await client.PostAsync($"/stores", contentToPost);
+        var content = await response.Content.ReadAsStringAsync();
+        var returnStoreDto = DeserialiseContent<ReturnStoreDto>(content);
+
+        return (response, returnStoreDto);
+    }
+
+    public static async Task<(
+        HttpResponseMessage,
+        ValidationJsonObject
+    )> ReturnValidationJsonObjectOnCreateAsync(HttpClient client, StringContent contentToPost)
+    {
+        using var response = await client.PostAsync($"/stores", contentToPost);
+        var validationJsonObject = await ReturnValidationJsonObjectFromResponseAsync(response);
+
+        return (response, validationJsonObject);
+    }
+
+    // GET
+    public static async Task<(HttpResponseMessage, List<StoreDto>)> ReturnStoreDtosOnReadAsync(
+        HttpClient client
+    )
+    {
+        var (response, content) = await ReturnContentOnReadAsync(client);
+        var storeDtos = DeserialiseContent<List<StoreDto>>(content);
+
+        return (response, storeDtos);
+    }
+
+    public static async Task<(HttpResponseMessage, StoreDto)> ReturnStoreDtoOnReadAsync(
+        HttpClient client,
+        int storeToGet
+    )
+    {
+        var (response, content) = await ReturnContentOnReadAsync(client, storeToGet);
+        var storeDto = DeserialiseContent<StoreDto>(content);
+
+        return (response, storeDto);
     }
 
     public static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
@@ -62,79 +115,6 @@ public static class TestHelpers
         var content = await response.Content.ReadAsStringAsync();
 
         return (response, content);
-    }
-
-    // POST
-    public static async Task<(
-        HttpResponseMessage,
-        ReturnStoreDto
-    )> ReturnReturnStoreDtoOnCreateAsync(HttpClient client, StringContent contentToPost)
-    {
-        HttpResponseMessage response;
-        ReturnStoreDto? returnStoreDto = null;
-        using (response = await client.PostAsync($"/stores", contentToPost))
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                returnStoreDto = JsonSerializer.Deserialize<ReturnStoreDto>(content);
-            }
-            catch (JsonException)
-            {
-                Assert.Fail("FAIL: The HTTP response message did not have any content.");
-            }
-        }
-
-        return (response, returnStoreDto!);
-    }
-
-    public static async Task<(
-        HttpResponseMessage,
-        ValidationJsonObject
-    )> ReturnValidationJsonObjectOnCreateAsync(HttpClient client, StringContent contentToPost)
-    {
-        using var response = await client.PostAsync($"/stores", contentToPost);
-        var validationJsonObject = await ReturnValidationJsonObjectFromResponseAsync(response);
-
-        return (response, validationJsonObject);
-    }
-
-    // GET
-    public static async Task<(HttpResponseMessage, List<StoreDto>)> ReturnStoreDtosOnReadAsync(
-        HttpClient client
-    )
-    {
-        List<StoreDto>? storeDtos = null;
-        var (response, content) = await ReturnContentOnReadAsync(client);
-        try
-        {
-            storeDtos = JsonSerializer.Deserialize<List<StoreDto>>(content);
-        }
-        catch (JsonException)
-        {
-            Assert.Fail("FAIL: The HTTP response message did not have any content.");
-        }
-
-        return (response, storeDtos!);
-    }
-
-    public static async Task<(HttpResponseMessage, StoreDto)> ReturnStoreDtoOnReadAsync(
-        HttpClient client,
-        int storeToGet
-    )
-    {
-        StoreDto? storeDto = null;
-        var (response, content) = await ReturnContentOnReadAsync(client, storeToGet);
-        try
-        {
-            storeDto = JsonSerializer.Deserialize<StoreDto>(content);
-        }
-        catch (JsonException)
-        {
-            Assert.Fail("FAIL: The HTTP response message did not have any content.");
-        }
-
-        return (response, storeDto!);
     }
 
     // PUT
@@ -163,25 +143,12 @@ public static class TestHelpers
         StringContent contentToPut
     )
     {
-        HttpResponseMessage? response;
-        string content;
-        ReturnStoreDto? returnStoreDto = null;
-
-        using (response = await client.PutAsync($"/stores/{storeToUpdate}", contentToPut))
-        {
-            content = await response.Content.ReadAsStringAsync();
-        }
+        using var response = await client.PutAsync($"/stores/{storeToUpdate}", contentToPut);
+        var content = await response.Content.ReadAsStringAsync();
 
         var (_, getContent) = await ReturnContentOnReadAsync(client, storeToUpdate);
-        try
-        {
-            returnStoreDto = JsonSerializer.Deserialize<ReturnStoreDto>(getContent);
-        }
-        catch (JsonException)
-        {
-            Assert.Fail("FAIL: The HTTP response message did not have any content.");
-        }
+        var returnStoreDto = DeserialiseContent<ReturnStoreDto>(getContent);
 
-        return (response, content, returnStoreDto)!;
+        return (response, content, returnStoreDto);
     }
 }
