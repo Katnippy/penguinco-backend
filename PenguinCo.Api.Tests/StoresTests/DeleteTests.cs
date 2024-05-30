@@ -56,7 +56,7 @@ public class DeleteTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task GetStoreByNonNumberIdReturns404()
+    public async Task DeleteStoreByNonNumberIdReturns404()
     {
         const string STORE_TO_DELETE = "penguin";
 
