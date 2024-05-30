@@ -16,7 +16,7 @@ public static class StoresEndpoints
         PenguinCoContext dbContext
     )
     {
-        var store = newStore.ToEntity();
+        var store = newStore.ConvertCreateStoreDtoToEntity();
 
         foreach (var stock in newStore.Stock)
         {
@@ -35,7 +35,7 @@ public static class StoresEndpoints
         await dbContext.SaveChangesAsync(); // ! Exceptions currently aren't handled.
 
         return TypedResults.CreatedAtRoute(
-            store.ToReturnStoreDto(),
+            store.ConvertEntityToReturnStoreDto(),
             Constants.GET_STORE_ENDPOINT_NAME,
             new { id = store.StoreId }
         );
@@ -46,7 +46,7 @@ public static class StoresEndpoints
     {
         var stores = await dbContext
             .Stores.Include(store => store.Stock)
-            .Select(store => store.ToDto())
+            .Select(store => store.ConvertEntityToDto())
             .AsNoTracking()
             .ToListAsync();
 
@@ -63,7 +63,7 @@ public static class StoresEndpoints
             .AsNoTracking()
             .FirstOrDefaultAsync(store => store.StoreId == id);
 
-        return store != null ? TypedResults.Ok(store.ToDto()) : TypedResults.NotFound();
+        return store != null ? TypedResults.Ok(store.ConvertEntityToDto()) : TypedResults.NotFound();
     }
 
     // PUT

@@ -6,7 +6,7 @@ namespace PenguinCo.Api.Mapping;
 
 public static class StoreMapping
 {
-    public static Store ToEntity(this CreateStoreDto newStore)
+    public static Store ConvertCreateStoreDtoToEntity(this CreateStoreDto newStore)
     {
         return new Store()
         {
@@ -17,7 +17,7 @@ public static class StoreMapping
         };
     }
 
-    public static StoreDto ToDto(this Store store)
+    public static StoreDto ConvertEntityToDto(this Store store)
     {
         return new(
             store.StoreId,
@@ -35,7 +35,7 @@ public static class StoreMapping
         );
     }
 
-    public static ReturnStoreDto ToReturnStoreDto(this Store store)
+    public static ReturnStoreDto ConvertEntityToReturnStoreDto(this Store store)
     {
         return new(
             store.StoreId,
