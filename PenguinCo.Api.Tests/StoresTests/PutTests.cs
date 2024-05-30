@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.DTOs;
 
-namespace PenguinCo.Api.Tests;
+namespace PenguinCo.Api.Tests.StoresTests;
 
 public class PutTests : IAsyncLifetime
 {
@@ -74,7 +74,7 @@ public class PutTests : IAsyncLifetime
         var (response, content, returnStoreDto) =
             await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
                 client,
-                STORE_TO_UPDATE,
+                $"/stores/{STORE_TO_UPDATE}",
                 contentToPut
             );
 
@@ -107,7 +107,7 @@ public class PutTests : IAsyncLifetime
         var (response, content, returnStoreDto) =
             await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
                 client,
-                STORE_TO_UPDATE,
+                $"/stores/{STORE_TO_UPDATE}",
                 contentToPut
             );
 
@@ -293,13 +293,13 @@ public class PutTests : IAsyncLifetime
         var (firstResponse, firstContent, _) =
             await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
                 client,
-                STORE_TO_UPDATE,
+                $"/stores/{STORE_TO_UPDATE}",
                 firstContentToPut
             );
         var (secondResponse, secondContent, returnStoreDto) =
             await TestHelpers.UpdateStoreAndReadUpdatedStoreAsync(
                 client,
-                STORE_TO_UPDATE,
+                $"/stores/{STORE_TO_UPDATE}",
                 secondContentToPut
             );
 

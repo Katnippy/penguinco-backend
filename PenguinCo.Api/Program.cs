@@ -15,6 +15,7 @@ public class Program
         var app = builder.Build();
 
         app.MapStoresEndpoints();
+        app.MapStockItemsEndpoints();
 
         await app.MigrateDbAsync();
 

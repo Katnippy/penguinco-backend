@@ -31,16 +31,6 @@ public static class TestHelpers
         return validationJsonObject;
     }
 
-    private static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
-        HttpClient client
-    )
-    {
-        using var response = await client.GetAsync($"/stores");
-        var content = await response.Content.ReadAsStringAsync();
-
-        return (response, content);
-    }
-
     public static StringContent SerialiseDto(ICUStoreDto storeDto)
     {
         var jsonString = JsonSerializer.Serialize(storeDto);
@@ -55,7 +45,7 @@ public static class TestHelpers
         ReturnStoreDto
     )> ReturnReturnStoreDtoOnCreateAsync(HttpClient client, StringContent contentToPost)
     {
-        using var response = await client.PostAsync($"/stores", contentToPost);
+        using var response = await client.PostAsync("/stores", contentToPost);
         var content = await response.Content.ReadAsStringAsync();
         var returnStoreDto = DeserialiseContent<ReturnStoreDto>(content);
 
@@ -67,54 +57,33 @@ public static class TestHelpers
         ValidationJsonObject
     )> ReturnValidationJsonObjectOnCreateAsync(HttpClient client, StringContent contentToPost)
     {
-        using var response = await client.PostAsync($"/stores", contentToPost);
+        using var response = await client.PostAsync("/stores", contentToPost);
         var validationJsonObject = await ReturnValidationJsonObjectFromResponseAsync(response);
 
         return (response, validationJsonObject);
     }
 
     // GET
-    public static async Task<(HttpResponseMessage, List<StoreDto>)> ReturnStoreDtosOnReadAsync(
-        HttpClient client
-    )
-    {
-        var (response, content) = await ReturnContentOnReadAsync(client);
-        var storeDtos = DeserialiseContent<List<StoreDto>>(content);
-
-        return (response, storeDtos);
-    }
-
-    public static async Task<(HttpResponseMessage, StoreDto)> ReturnStoreDtoOnReadAsync(
-        HttpClient client,
-        int storeToGet
-    )
-    {
-        var (response, content) = await ReturnContentOnReadAsync(client, storeToGet);
-        var storeDto = DeserialiseContent<StoreDto>(content);
-
-        return (response, storeDto);
-    }
-
     public static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
         HttpClient client,
-        int storeToGet
+        string requestUri
     )
     {
-        using var response = await client.GetAsync($"/stores/{storeToGet}");
+        using var response = await client.GetAsync(requestUri);
         var content = await response.Content.ReadAsStringAsync();
 
         return (response, content);
     }
 
-    public static async Task<(HttpResponseMessage, string)> ReturnContentOnReadAsync(
+    public static async Task<(HttpResponseMessage, T)> ReturnDtoOrDtosOnReadAsync<T>(
         HttpClient client,
-        string storeToGet
+        string requestUri
     )
     {
-        using var response = await client.GetAsync($"/stores/{storeToGet}");
-        var content = await response.Content.ReadAsStringAsync();
+        var (response, content) = await ReturnContentOnReadAsync(client, requestUri);
+        var dtoOrDtos = DeserialiseContent<T>(content);
 
-        return (response, content);
+        return (response, dtoOrDtos);
     }
 
     // PUT
@@ -139,14 +108,14 @@ public static class TestHelpers
         ReturnStoreDto
     )> UpdateStoreAndReadUpdatedStoreAsync(
         HttpClient client,
-        int storeToUpdate,
+        string requestUri,
         StringContent contentToPut
     )
     {
-        using var response = await client.PutAsync($"/stores/{storeToUpdate}", contentToPut);
+        using var response = await client.PutAsync(requestUri, contentToPut);
         var content = await response.Content.ReadAsStringAsync();
 
-        var (_, getContent) = await ReturnContentOnReadAsync(client, storeToUpdate);
+        var (_, getContent) = await ReturnContentOnReadAsync(client, requestUri);
         var returnStoreDto = DeserialiseContent<ReturnStoreDto>(getContent);
 
         return (response, content, returnStoreDto);

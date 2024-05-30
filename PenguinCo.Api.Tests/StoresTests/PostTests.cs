@@ -1,10 +1,9 @@
 using System.Net;
 using System.Text;
-using System.Text.Json;
 using PenguinCo.Api.DTOs;
 using Stock = PenguinCo.Api.DTOs.Stock;
 
-namespace PenguinCo.Api.Tests;
+namespace PenguinCo.Api.Tests.StoresTests;
 
 public class PostTests
 {

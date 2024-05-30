@@ -1,10 +1,8 @@
 using System.Net;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.DependencyInjection;
 using PenguinCo.Api.Data;
-using PenguinCo.Api.Endpoints;
 
-namespace PenguinCo.Api.Tests;
+namespace PenguinCo.Api.Tests.StoresTests;
 
 public class DeleteTests : IAsyncLifetime
 {

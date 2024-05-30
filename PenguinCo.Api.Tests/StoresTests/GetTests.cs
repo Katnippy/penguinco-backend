@@ -1,8 +1,7 @@
 ﻿using System.Net;
-using System.Text.Json;
 using PenguinCo.Api.DTOs;
 
-namespace PenguinCo.Api.Tests;
+namespace PenguinCo.Api.Tests.StoresTests;
 
 public class GetTests
 {
@@ -17,7 +16,10 @@ public class GetTests
         using var client = _app.CreateClient();
 
         // Act
-        var (response, storeDtos) = await TestHelpers.ReturnStoreDtosOnReadAsync(client);
+        var (response, storeDtos) = await TestHelpers.ReturnDtoOrDtosOnReadAsync<List<StoreDto>>(
+            client,
+            "/stores"
+        );
         var storeDtoToCheck = storeDtos[STOREDTO_TO_CHECK];
 
         // Assert
@@ -39,15 +41,15 @@ public class GetTests
         using var client = _app.CreateClient();
 
         // Act
-        var (response, storeDto) = await TestHelpers.ReturnStoreDtoOnReadAsync(
+        var (response, storeDto) = await TestHelpers.ReturnDtoOrDtosOnReadAsync<StoreDto>(
             client,
-            STORE_TO_GET
+            $"/stores/{STORE_TO_GET}"
         );
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Assert.True(storeDto!.Id == 1);
+        Assert.True(storeDto.Id == 1);
         Assert.True(storeDto.Name == "PenguinCo Shrewsbury");
         Assert.True(storeDto.Address == "Shrewsbury, West Midlands, England");
         Assert.True(storeDto.Stock.Count == 2);
@@ -63,7 +65,10 @@ public class GetTests
         using var client = _app.CreateClient();
 
         // Act
-        var (response, content) = await TestHelpers.ReturnContentOnReadAsync(client, STORE_TO_GET);
+        var (response, content) = await TestHelpers.ReturnContentOnReadAsync(
+            client,
+            $"/stores/{STORE_TO_GET}"
+        );
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -80,7 +85,10 @@ public class GetTests
         using var client = _app.CreateClient();
 
         // Act
-        var (response, content) = await TestHelpers.ReturnContentOnReadAsync(client, STORE_TO_GET);
+        var (response, content) = await TestHelpers.ReturnContentOnReadAsync(
+            client,
+            $"/stores/{STORE_TO_GET}"
+        );
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
