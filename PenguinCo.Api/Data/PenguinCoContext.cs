@@ -80,17 +80,72 @@ public class PenguinCoContext(DbContextOptions<PenguinCoContext> options) : DbCo
         modelBuilder
             .Entity<StockItem>()
             .HasData(
-                new StockItem { StockItemId = 1, Name = "Pingu" },
-                new StockItem { StockItemId = 2, Name = "Pinga" },
-                new StockItem { StockItemId = 3, Name = "Tux" },
-                new StockItem { StockItemId = 4, Name = "Tuxedosam" },
-                new StockItem { StockItemId = 5, Name = "Suica" },
-                new StockItem { StockItemId = 6, Name = "Donpen" },
-                new StockItem { StockItemId = 7, Name = "Pen Pen" },
-                new StockItem { StockItemId = 8, Name = "Private" },
-                new StockItem { StockItemId = 9, Name = "Skipper" },
-                new StockItem { StockItemId = 10, Name = "Kowalski" },
-                new StockItem { StockItemId = 11, Name = "Rico" }
+                new StockItem
+                {
+                    StockItemId = 1,
+                    Name = "Pingu",
+                    Image = "../../images/pingu.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 2,
+                    Name = "Pinga",
+                    Image = "../../images/pinga.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 3,
+                    Name = "Tux",
+                    Image = "../../images/tux.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 4,
+                    Name = "Tuxedosam",
+                    Image = "../../images/tuxedosam.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 5,
+                    Name = "Suica",
+                    Image = "../../images/suica.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 6,
+                    Name = "Donpen",
+                    Image = "../../images/donpen.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 7,
+                    Name = "Pen Pen",
+                    Image = "../../images/penpen.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 8,
+                    Name = "Private",
+                    Image = "../../images/private.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 9,
+                    Name = "Skipper",
+                    Image = "../../images/skipper.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 10,
+                    Name = "Kowalski",
+                    Image = "../../images/kowalski.jpg"
+                },
+                new StockItem
+                {
+                    StockItemId = 11,
+                    Name = "Rico",
+                    Image = "../../images/rico.jpg"
+                }
             );
     }
 }

@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PenguinCo.Api.Data;
 
 #nullable disable
 
-namespace PenguinCo.Api.Data.Migrations
+namespace PenguinCo.Api.DataMigrations
 {
     [DbContext(typeof(PenguinCoContext))]
-    partial class PenguinCoContextModelSnapshot : ModelSnapshot
+    [Migration("20240603141012_AddImageToStockItem")]
+    partial class AddImageToStockItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
