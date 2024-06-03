@@ -12,10 +12,14 @@ public class Program
         var connString = builder.Configuration.GetConnectionString("PenguinCo");
         builder.Services.AddSqlServer<PenguinCoContext>(connString);
 
+        builder.Services.AddCors();
+
         var app = builder.Build();
 
         app.MapStoresEndpoints();
         app.MapStockItemsEndpoints();
+
+        app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173"));
 
         await app.MigrateDbAsync();
 
