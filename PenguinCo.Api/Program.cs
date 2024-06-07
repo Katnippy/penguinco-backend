@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpLogging;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.Endpoints;
 
@@ -14,12 +15,28 @@ public class Program
 
         builder.Services.AddCors();
 
+        builder.Services.AddHttpLogging(logging =>
+        {
+            logging.LoggingFields =
+                HttpLoggingFields.Duration
+                | HttpLoggingFields.RequestBody
+                | HttpLoggingFields.RequestHeaders
+                | HttpLoggingFields.RequestMethod
+                | HttpLoggingFields.RequestPath
+                | HttpLoggingFields.ResponseHeaders
+                | HttpLoggingFields.ResponseStatusCode;
+            logging.RequestBodyLogLimit = 4096;
+            logging.CombineLogs = true;
+        });
+
         var app = builder.Build();
 
         app.MapStoresEndpoints();
         app.MapStockItemsEndpoints();
 
         app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173"));
+
+        app.UseHttpLogging();
 
         await app.MigrateDbAsync();
 

@@ -26,6 +26,7 @@ public class GetTests
 
         Assert.True(stockItemDtoToCheck.Id == 3);
         Assert.True(stockItemDtoToCheck.Name == "Tux");
+        Assert.True(stockItemDtoToCheck.Image == "../../images/tux.jpg");
     }
 
     [Fact]
@@ -47,6 +48,7 @@ public class GetTests
 
         Assert.True(stockItemDto.Id == 4);
         Assert.True(stockItemDto.Name == "Tuxedosam");
+        Assert.True(stockItemDto.Image == "../../images/tuxedosam.jpg");
     }
 
     [Fact]
