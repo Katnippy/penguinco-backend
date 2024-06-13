@@ -35,7 +35,9 @@ public class Program
         app.MapStoresEndpoints();
         app.MapStockItemsEndpoints();
 
-        app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173"));
+        app.UseCors(cors =>
+            cors.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173")
+        );
 
         app.UseHttpLogging();
 
