@@ -120,4 +120,16 @@ public static class TestHelpers
 
         return (response, content, returnStoreDto);
     }
+
+    public static async Task<(HttpResponseMessage, string)> ReturnContentOnUpdateAsync(
+        HttpClient client,
+        string requestUri,
+        StringContent contentToPut
+    )
+    {
+        using var response = await client.PutAsync(requestUri, contentToPut);
+        var content = await response.Content.ReadAsStringAsync();
+
+        return (response, content);
+    }
 }

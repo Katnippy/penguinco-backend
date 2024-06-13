@@ -10,6 +10,38 @@ public class PutTests : IAsyncLifetime
 {
     private readonly TestApp _app;
     private readonly PenguinCoContext _dbContext;
+    private readonly UpdateStoreDto _updatedStore =
+        new(
+            "PenguinCo Namibia",
+            "Lüderitz, ǁKaras Region, Namibia",
+            [
+                new Stock
+                {
+                    Id = 1,
+                    StockItemId = 8,
+                    Quantity = 14
+                },
+                new Stock
+                {
+                    Id = 2,
+                    StockItemId = 9,
+                    Quantity = 15
+                },
+                new Stock
+                {
+                    Id = 3,
+                    StockItemId = 10,
+                    Quantity = 5
+                },
+                new Stock
+                {
+                    Id = 4,
+                    StockItemId = 11,
+                    Quantity = 20
+                }
+            ],
+            new DateOnly(2024, 5, 21)
+        );
 
     public PutTests()
     {
@@ -34,39 +66,7 @@ public class PutTests : IAsyncLifetime
         // Arrange
         const int STORE_TO_UPDATE = 2;
 
-        UpdateStoreDto updatedStore =
-            new(
-                "PenguinCo Namibia",
-                "Lüderitz, ǁKaras Region, Namibia",
-                [
-                    new Stock
-                    {
-                        Id = 1,
-                        StockItemId = 8,
-                        Quantity = 14
-                    },
-                    new Stock
-                    {
-                        Id = 2,
-                        StockItemId = 9,
-                        Quantity = 15
-                    },
-                    new Stock
-                    {
-                        Id = 3,
-                        StockItemId = 10,
-                        Quantity = 5
-                    },
-                    new Stock
-                    {
-                        Id = 4,
-                        StockItemId = 11,
-                        Quantity = 20
-                    }
-                ],
-                new DateOnly(2024, 5, 21)
-            );
-        var contentToPut = TestHelpers.SerialiseDto(updatedStore);
+        var contentToPut = TestHelpers.SerialiseDto(_updatedStore);
 
         using var client = _app.CreateClient();
 
@@ -311,5 +311,51 @@ public class PutTests : IAsyncLifetime
         Assert.Empty(secondContent);
 
         Assert.True(returnStoreDto.Stock[3].Quantity == 18);
+    }
+
+    [Fact]
+    public async Task PutStoreByNonexistentIdReturns404()
+    {
+        // Arrange
+        const int STORE_TO_UPDATE = 99999;
+
+        var contentToPut = TestHelpers.SerialiseDto(_updatedStore);
+
+        using var client = _app.CreateClient();
+
+        // Act
+        var (response, content) = await TestHelpers.ReturnContentOnUpdateAsync(
+            client,
+            $"/stores/{STORE_TO_UPDATE}",
+            contentToPut
+        );
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+        Assert.Empty(content);
+    }
+
+    [Fact]
+    public async Task PutStoreByNonNumberIdReturns404()
+    {
+        // Arrange
+        const string STORE_TO_UPDATE = "penguin";
+
+        var contentToPut = TestHelpers.SerialiseDto(_updatedStore);
+
+        using var client = _app.CreateClient();
+
+        // Act
+        var (response, content) = await TestHelpers.ReturnContentOnUpdateAsync(
+            client,
+            $"/stores/{STORE_TO_UPDATE}",
+            contentToPut
+        );
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+        Assert.Empty(content);
     }
 }
