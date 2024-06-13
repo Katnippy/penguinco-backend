@@ -17,13 +17,11 @@ public static class StoresEndpoints
     )
     {
         var store = newStore.ConvertCreateStoreDtoToEntity();
-
         foreach (var stock in newStore.Stock)
         {
             var storeStock = new Stock
             {
                 StockItemId = stock.StockItemId,
-                // ? Do we really need to do this every time?
                 StockItem = await dbContext.StockItems.FindAsync(stock.StockItemId),
                 Quantity = stock.Quantity
             };
@@ -31,7 +29,7 @@ public static class StoresEndpoints
             store.Stock.Add(storeStock);
         }
 
-        dbContext.Stores.Add(store);
+        await dbContext.Stores.AddAsync(store);
         await dbContext.SaveChangesAsync();
 
         return TypedResults.CreatedAtRoute(
@@ -87,19 +85,20 @@ public static class StoresEndpoints
         {
             dbContext.Entry(existingStore).CurrentValues.SetValues(updatedStore);
             dbContext.Stock.RemoveRange(existingStore.Stock);
+
             foreach (var newStock in updatedStore.Stock)
             {
                 await dbContext.Stock.AddAsync(
                     new Stock
                     {
                         StockItemId = newStock.StockItemId,
-                        // ? Do we really need to do this every time?
                         StockItem = await dbContext.StockItems.FindAsync(newStock.StockItemId),
                         Quantity = newStock.Quantity,
                         StoreId = id
                     }
                 );
             }
+
             await dbContext.SaveChangesAsync();
 
             return TypedResults.NoContent();
