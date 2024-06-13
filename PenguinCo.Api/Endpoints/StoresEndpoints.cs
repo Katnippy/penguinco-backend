@@ -32,7 +32,7 @@ public static class StoresEndpoints
         }
 
         dbContext.Stores.Add(store);
-        await dbContext.SaveChangesAsync(); // ! Exceptions currently aren't handled.
+        await dbContext.SaveChangesAsync();
 
         return TypedResults.CreatedAtRoute(
             store.ConvertEntityToReturnStoreDto(),
@@ -63,7 +63,9 @@ public static class StoresEndpoints
             .AsNoTracking()
             .FirstOrDefaultAsync(store => store.StoreId == id);
 
-        return store != null ? TypedResults.Ok(store.ConvertEntityToDto()) : TypedResults.NotFound();
+        return store != null
+            ? TypedResults.Ok(store.ConvertEntityToDto())
+            : TypedResults.NotFound();
     }
 
     // PUT

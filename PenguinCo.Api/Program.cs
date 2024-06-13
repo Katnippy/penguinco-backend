@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.HttpLogging;
 using PenguinCo.Api.Data;
 using PenguinCo.Api.Endpoints;
+using PenguinCo.Api.Extensions;
 
 namespace PenguinCo.Api;
 
@@ -37,6 +38,10 @@ public class Program
         app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173"));
 
         app.UseHttpLogging();
+
+        app.UseExceptionHandler(exceptionHandlerApp =>
+            exceptionHandlerApp.ConfigureExceptionHandler()
+        );
 
         await app.MigrateDbAsync();
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PenguinCo.Api.Data;
 
-namespace PenguinCo.Api.Data;
+namespace PenguinCo.Api.Extensions;
 
 public static class DataExtensions
 {
