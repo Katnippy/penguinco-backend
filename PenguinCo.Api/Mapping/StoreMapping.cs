@@ -1,6 +1,5 @@
 ﻿using PenguinCo.Api.DTOs;
 using PenguinCo.Api.Entities;
-using Stock = PenguinCo.Api.Entities.Stock;
 
 namespace PenguinCo.Api.Mapping;
 
@@ -46,7 +45,7 @@ public static class StoreMapping
                 .ConvertAll(stock => new ReturnStock
                 {
                     Id = stock.StockId,
-                    Name = stock.StockItem!.Name,
+                    Name = stock.StockItem?.Name,
                     Quantity = stock.Quantity
                 }),
             store.Updated

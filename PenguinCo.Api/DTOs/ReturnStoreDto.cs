@@ -8,7 +8,7 @@ public class ReturnStock
     public int Id { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
+    public string? Name { get; set; } = string.Empty;
 
     [JsonPropertyName("quantity")]
     public int Quantity { get; set; }
