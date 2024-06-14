@@ -77,12 +77,15 @@ public static class ExceptionHandlingExtensions
                     );
                     break;
 
+                case null:
+                    break;
+
                 default:
                     await LogExceptionAndReturn500(
                         logger,
                         EventIds.UnexpectedException,
                         "\x1b[1mAn unexpected exception has occurred:\x1b[0m",
-                        exception!,
+                        exception,
                         httpContext
                     );
                     break;
