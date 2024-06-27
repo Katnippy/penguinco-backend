@@ -24,7 +24,7 @@ public class GetTests
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Assert.True(stockItemDtoToCheck.Id == 3);
+        Assert.True(stockItemDtoToCheck.Id == "3");
         Assert.True(stockItemDtoToCheck.Name == "Tux");
         Assert.True(stockItemDtoToCheck.Image == "../../images/tux.jpg");
     }
@@ -46,7 +46,7 @@ public class GetTests
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Assert.True(stockItemDto.Id == 4);
+        Assert.True(stockItemDto.Id == "4");
         Assert.True(stockItemDto.Name == "Tuxedosam");
         Assert.True(stockItemDto.Image == "../../images/tuxedosam.jpg");
     }

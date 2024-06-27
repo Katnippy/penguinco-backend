@@ -19,14 +19,14 @@ public static class StoreMapping
     public static StoreDto ConvertEntityToDto(this Store store)
     {
         return new(
-            store.StoreId,
+            store.StoreId.ToString(),
             store.Name,
             store.Address,
             store
                 .Stock.ToList()
                 .ConvertAll(stock => new DTOs.Stock
                 {
-                    Id = stock.StockId,
+                    Id = stock.StockId.ToString(),
                     StockItemId = stock.StockItemId,
                     Quantity = stock.Quantity
                 }),
@@ -37,15 +37,15 @@ public static class StoreMapping
     public static ReturnStoreDto ConvertEntityToReturnStoreDto(this Store store)
     {
         return new(
-            store.StoreId,
+            store.StoreId.ToString(),
             store.Name,
             store.Address,
             store
                 .Stock.ToList()
                 .ConvertAll(stock => new ReturnStock
                 {
-                    Id = stock.StockId,
-                    Name = stock.StockItem?.Name,
+                    Id = stock.StockId.ToString(),
+                    Name = stock.StockItem!.Name,
                     Quantity = stock.Quantity
                 }),
             store.Updated

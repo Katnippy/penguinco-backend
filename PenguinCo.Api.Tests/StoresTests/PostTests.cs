@@ -20,25 +20,25 @@ public class PostTests
                 [
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 8,
                         Quantity = 98
                     },
                     new Stock
                     {
-                        Id = 2,
+                        Id = "2",
                         StockItemId = 9,
                         Quantity = 43
                     },
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 10,
                         Quantity = 48
                     },
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 11,
                         Quantity = 42
                     }
@@ -127,25 +127,25 @@ public class PostTests
                 [
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 8,
                         Quantity = 98
                     },
                     new Stock
                     {
-                        Id = 2,
+                        Id = "2",
                         StockItemId = 9,
                         Quantity = 43
                     },
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 10,
                         Quantity = 48
                     },
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 11,
                         Quantity = 42
                     }

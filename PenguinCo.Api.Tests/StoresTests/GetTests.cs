@@ -25,7 +25,7 @@ public class GetTests
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Assert.True(storeDtoToCheck.Id == 2);
+        Assert.True(storeDtoToCheck.Id == "2");
         Assert.True(storeDtoToCheck.Name == "PenguinCo Namibia");
         Assert.True(storeDtoToCheck.Address == "Lüderitz, ǁKaras Region, Namibia");
         Assert.True(storeDtoToCheck.Stock.Count == 4);
@@ -49,7 +49,7 @@ public class GetTests
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        Assert.True(storeDto.Id == 1);
+        Assert.True(storeDto.Id == "1");
         Assert.True(storeDto.Name == "PenguinCo Shrewsbury");
         Assert.True(storeDto.Address == "Shrewsbury, West Midlands, England");
         Assert.True(storeDto.Stock.Count == 2);

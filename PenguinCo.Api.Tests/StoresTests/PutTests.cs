@@ -17,25 +17,25 @@ public class PutTests : IAsyncLifetime
             [
                 new Stock
                 {
-                    Id = 1,
+                    Id = "1",
                     StockItemId = 8,
                     Quantity = 14
                 },
                 new Stock
                 {
-                    Id = 2,
+                    Id = "2",
                     StockItemId = 9,
                     Quantity = 15
                 },
                 new Stock
                 {
-                    Id = 3,
+                    Id = "3",
                     StockItemId = 10,
                     Quantity = 5
                 },
                 new Stock
                 {
-                    Id = 4,
+                    Id = "4",
                     StockItemId = 11,
                     Quantity = 20
                 }
@@ -162,25 +162,25 @@ public class PutTests : IAsyncLifetime
                 [
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 8,
                         Quantity = 15
                     },
                     new Stock
                     {
-                        Id = 2,
+                        Id = "2",
                         StockItemId = 9,
                         Quantity = 15
                     },
                     new Stock
                     {
-                        Id = 3,
+                        Id = "3",
                         StockItemId = 10,
                         Quantity = 5
                     },
                     new Stock
                     {
-                        Id = 4,
+                        Id = "4",
                         StockItemId = 11,
                         Quantity = 20
                     }
@@ -226,25 +226,25 @@ public class PutTests : IAsyncLifetime
                 [
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 8,
                         Quantity = 15
                     },
                     new Stock
                     {
-                        Id = 2,
+                        Id = "2",
                         StockItemId = 9,
                         Quantity = 15
                     },
                     new Stock
                     {
-                        Id = 3,
+                        Id = "3",
                         StockItemId = 10,
                         Quantity = 5
                     },
                     new Stock
                     {
-                        Id = 4,
+                        Id = "4",
                         StockItemId = 11,
                         Quantity = 19
                     }
@@ -260,25 +260,25 @@ public class PutTests : IAsyncLifetime
                 [
                     new Stock
                     {
-                        Id = 1,
+                        Id = "1",
                         StockItemId = 8,
                         Quantity = 14
                     },
                     new Stock
                     {
-                        Id = 2,
+                        Id = "2",
                         StockItemId = 9,
                         Quantity = 15
                     },
                     new Stock
                     {
-                        Id = 3,
+                        Id = "3",
                         StockItemId = 10,
                         Quantity = 5
                     },
                     new Stock
                     {
-                        Id = 4,
+                        Id = "4",
                         StockItemId = 11,
                         Quantity = 18
                     }

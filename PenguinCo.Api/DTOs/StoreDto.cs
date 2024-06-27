@@ -5,7 +5,7 @@ namespace PenguinCo.Api.DTOs;
 public class Stock
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
     [JsonPropertyName("stockItemId")]
     public int StockItemId { get; set; }
@@ -15,7 +15,7 @@ public class Stock
 }
 
 public record StoreDto(
-    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("id")] string Id,
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("address")] string Address,
     [property: JsonPropertyName("stock")] List<Stock> Stock,
